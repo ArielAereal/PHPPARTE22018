@@ -1,0 +1,14 @@
+INSERT INTO `empleados` (`nombre`, `turno`, `tipo`) VALUES ('Julio Sosa','tarde','novato'),
+('Emilce Diaz','tarde','novato'),
+('Mariano Torres','mañana','novato'),
+('Francisco Lopez','noche','novato'),
+
+('Marcela Alarillo','tarde','ecargado'),
+('Nahuel Mercado','mañana','encargado'),
+
+('Osvaldo Hospital','mañana','jefe'),
+('Micaela Gramajo','noche','jefe')
+
+
+INSERT INTO `locales`(`direccion`, `idLocalidad`, `estado`) VALUES ('Rincon 408',7,'abierto'), ('Albarracin 48',10,'abierto'), ('Perez Volpin 2483',2,'abierto'), ('Sultanes 101',8,'abierto'), ('Bores 1280',5,'cerrado'), ('Belgrano 12087',3,'cerrado')
+
