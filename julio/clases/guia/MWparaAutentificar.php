@@ -118,4 +118,41 @@ class MWparaAutentificar
 		return $response;
 	}
 
+	public function ValidarVenta($request, $response, $next) {
+
+		$elt = $request->getHeaderLine('tokenmedias');
+	//	var_dump(AutentificadorJWT::ObtenerPayLoad($elt));
+		
+
+	$profile = AutentificadorJWT::ObtenerPayLoad($elt);
+	//var_dump($profile);
+		if($profile->data == "Empleado" || $profile->data == "Encargado")
+		{
+			echo "$profile->data ha hecho una venta<br><br>";
+			$response = $next($request, $response); 
+		}else{
+			echo "Si sos dueño, no corresponde que vendas<br><br>";
+		}
+
+		return $response;
+	}
+
+	public function ValidarEnc($request, $response, $next) {
+
+		$elt = $request->getHeaderLine('tokenmedias');
+	//	var_dump(AutentificadorJWT::ObtenerPayLoad($elt));
+		
+
+	$profile = AutentificadorJWT::ObtenerPayLoad($elt);
+	//var_dump($profile);
+		if($profile->data == "Encargado")
+		{
+			echo "$profile->data ha hecho una modificación a una venta<br><br>";
+			$response = $next($request, $response); 
+		}else{
+			echo "Si sos dueño o empleado, no entendés de modificar ventas<br><br>";
+		}
+
+		return $response;
+	}
 }//clase

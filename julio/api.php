@@ -1,8 +1,7 @@
 <?php
 
-// por ahi puedo hacer un middleware para recibir los datos, y
-//pasarlos al metodo estandar... . 
-// pensando en las cosas que no andan.
+
+//header content type  x-www-form-urlencoded         
 
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
@@ -59,6 +58,18 @@ $app->group('/usuarios',function(){
     
 });
 
+$app->group('/ventamedias',function(){
+
+    $this->post('/venta/', VentaMedia::class.':CargarUno')
+    ->add(\MWparaAutentificar::class.':ValidarVenta')
+    ->add(\MWparaAutentificar::class.':ValidarToc');
+
+    // no anda por put
+    $this->post('/modificarv/',VentaMedia::class.':ModificarUno')
+    ->add(\MWparaAutentificar::class.':ValidarEnc')
+    ->add(\MWparaAutentificar::class.':ValidarToc');
+
+});
 
 
 
@@ -83,14 +94,6 @@ $app->group('/usuarios',function(){
     return $response;
 });*/
 
-
-$devolverPayLoad = function ($req,$resp,$next){
-    $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
-    $token= AutentificadorJWT::CrearToken($datos); 
-    $payload=AutentificadorJWT::ObtenerPayload($token);
-    $newResponse = $response->withJson($payload, 200); 
-    return $newResponse;
-};
 /*$app->get('/devolverPayLoad/', function (Request $request, Response $response) { 
     $datos = array('usuario' => 'rogelio@agua.com','perfil' => 'Administrador', 'alias' => "PinkBoy");
     $token= AutentificadorJWT::CrearToken($datos); 

@@ -3,6 +3,9 @@
 require_once "clases/guia/AccesoDatos.php";
 require_once "clases/guia/IApiUsable.php";
 
+// no anda... .
+//use guzzlehttp\psr7\src\LazyOpenStream;
+
 class Media implements IApiUsable{
 
     private $id;
@@ -81,24 +84,60 @@ class Media implements IApiUsable{
     
     public function Nomostrar($req,$resp,$next){
 
-        $params = $resp->getBody();
-        var_dump($params);
+        // cuando vuelve
+        // NO me sale el ultimo paso
+        $next($req,$resp);
+
+//        $mw_response = $resp->__toString();
+        //no
+    //    $eltoque = $resp->getParsedBody();
+
+        //var_dump($eltoque);
+
+    //    $requestobject = json_decode($mw_response);
 
 
 
-        //$route = $req->getAttribute('smedias');
-        //Media::GenerarListadoMediasNomostrar();        
-        //$newResponse = $response->withJson($Lasmedias, 200);  
-          //return $newResponse;
+       // $request = $request->withParsedBody($requestobject);
+        //var_dump($request);
+        /*$dato = $resp->__toString();        
+        
+        var_dump($dato);*/
+
+        // Get response set by middleware.
+
+    // Now reset the response.
+
+    echo "las bolas, la tabla se imprime directamente cuando pasa, como acá =>...";
+
+    $Lasmedias=Media::TraerTodasLasMedias();          
+    Media::GenerarListadoMediasNomostrar($Lasmedias);
+
+    $resp = new \Slim\Http\Response();
+        
+        
+
         return $resp;
+
+        // no me sale una 
+        /*$resp = $next($req, $resp);   					              
+        $newStream = new \GuzzleHttp\Psr7\LazyOpenStream('..\vendor\guzzlehttp\psr7\src\LazyOpenStream.php', 'r');
+        
+        
+        //var_dump($resp->__toString());
+        $newResponse = $resp->withBody($newStream);        
+        
+        return $newResponse;*/
     }
 
     public function TraerTodos($request, $response, $args) {
 
-            $Lasmedias=Media::TraerTodasLasMedias();
-            
-            Media::GenerarListadoMedias($Lasmedias);
-           $newResponse = $response->withJson($Lasmedias, 200);  
+            // tira null
+
+            $Lasmedias=Media::TraerTodasLasMedias();                      
+            $salen = Media::GenerarListadoMedias($Lasmedias);
+            $newResponse = $response->withJson($salen, 200);  
+           //$newResponse = $response->withJson(Media::GenerarListadoMedias($Lasmedias), 200);  
           return $newResponse;
     }
 
@@ -123,9 +162,8 @@ class Media implements IApiUsable{
     }
     
     public static function GenerarListadoMedias($medias){
-        echo "<pre>";
-      //  var_dump($medias);
-        echo "</pre>";
+     // no sale   $build ="<table border='2px' solid><caption>Resumen de medias vivas</caption><thead><tr><th>ID</th>";/*          
+       
         echo "<table border='2px' solid>";
         echo "<caption>Resumen de medias vivas</caption>";
         echo "<thead>";
@@ -159,6 +197,7 @@ class Media implements IApiUsable{
 
         echo "</tbody>";
         echo "</table>";
+        
     }
 
     
@@ -166,6 +205,8 @@ class Media implements IApiUsable{
     public function CargarUno($request, $response, $args){
      
      //header content type  x-www-form-urlencoded         
+
+     // tira objeto vacío
 
     $params = $request->getParsedBody();
 
@@ -188,6 +229,7 @@ class Media implements IApiUsable{
 
 
     $altamedia->InsertarLaMediaParametros();
+    echo "Media puesta";
     $newResponse = $response->withJson($altamedia, 200);  
     return $newResponse;
         
